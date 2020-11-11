@@ -50,6 +50,26 @@ describe('app routes', () => {
           completed: false,
         }
       ];
+      await fakeRequest(app)
+        .post('/api/todos')
+        .send(expectation[0])
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      await fakeRequest(app)
+        .post('/api/todos')
+        .send(expectation[1])
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      await fakeRequest(app)
+        .post('/api/todos')
+        .send(expectation[2])
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200);
 
       const data = await fakeRequest(app)
         .get('/todos')
