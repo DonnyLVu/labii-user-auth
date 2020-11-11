@@ -9,53 +9,50 @@ const client = require('../lib/client');
 describe('app routes', () => {
   describe('routes', () => {
     let token;
-  
+
     beforeAll(async done => {
       execSync('npm run setup-db');
-  
+
       client.connect();
-  
+
       const signInData = await fakeRequest(app)
         .post('/auth/signup')
         .send({
           email: 'jon@user.com',
           password: '1234'
         });
-      
+
       token = signInData.body.token; // eslint-disable-line
-  
+
       return done();
     });
-  
+
     afterAll(done => {
       return client.end(done);
     });
 
-    test('returns animals', async() => {
+    test('returns todos', async () => {
 
       const expectation = [
         {
-          'id': 1,
-          'name': 'bessie',
-          'coolfactor': 3,
-          'owner_id': 1
+          id: 1,
+          todo: 'buy a duck',
+          completed: false,
         },
         {
-          'id': 2,
-          'name': 'jumpy',
-          'coolfactor': 4,
-          'owner_id': 1
+          id: 2,
+          todo: 'eat the duck',
+          completed: false,
         },
         {
-          'id': 3,
-          'name': 'spot',
-          'coolfactor': 10,
-          'owner_id': 1
+          id: 3,
+          todo: 'kenka wo tabemasu',
+          completed: false,
         }
       ];
 
       const data = await fakeRequest(app)
-        .get('/animals')
+        .get('/todos')
         .expect('Content-Type', /json/)
         .expect(200);
 
